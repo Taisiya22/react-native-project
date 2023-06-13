@@ -11,13 +11,22 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 // import background from "../assets/images/photo-bg.png"
+// import * as Font from 'expo-font';
+// import { AppLoading } from 'expo'
+
+// const loadFonts = async () => {
+//   await Font.loadAsync({
+//     "Roboto-Regulat": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+//     "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
+//   });
+// };
 
 export const RegistrationScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+          style={{ flex:1}}
     >
       <View style={styles.form}>
         <View style={styles.avatarWrapper}>
@@ -34,7 +43,8 @@ export const RegistrationScreen = () => {
           <TextInput style={styles.input} secureTextEntry={true} />
           <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
             <Text style={styles.btnTitle}>Registration</Text>
-          </TouchableOpacity>
+                  </TouchableOpacity>
+                  <Text style={ styles.text}>Do you have already account? Log in.</Text>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -66,8 +76,9 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
-
+// top:'35%',
       justifyContent: "center",
+     
    
     // zIndex: 555,
   },
@@ -82,14 +93,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 
-  title: {
+    title: {
+      fontFamily: 'roboto',
     textAlign: "center",
     fontSize: 30,
       fontWeight: 500,
     
   },
   inputWrap: {
-    // marginTop: 92,
+
     marginHorizontal: 30,
       gap: 16,
       position:'absolute'
@@ -105,12 +117,24 @@ const styles = StyleSheet.create({
     paddingLeft: 32,
     justifyContent: "center",
     alignItems: "center",
-    // marginTop:43
+    marginTop:43
   },
-  btnTitle: {
+    btnTitle: {
+    fontFamily: 'roboto',
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: 400,
-  },
+    },
+    text: {
+        fontFamily: 'roboto',
+        fontWeight: 400,
+fontSize: 16,
+lineHeight: 19,
+textAlign: "center",
+        color: "#1B4371",
+        marginTop: 16,
+
+
+    }
 });
 
