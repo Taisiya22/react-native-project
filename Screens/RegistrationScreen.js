@@ -9,45 +9,79 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
-// import background from "../assets/images/photo-bg.png"
-// import * as Font from 'expo-font';
-// import { AppLoading } from 'expo'
-
-// const loadFonts = async () => {
-//   await Font.loadAsync({
-//     "Roboto-Regulat": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
-//     "Roboto-Bold": require("./assets/fonts/Roboto/Roboto-Bold.ttf"),
-//   });
-// };
-
+const ColorBorders = {
+  name: "#E8E8E8",
+  email: "#E8E8E8",
+  password: "#E8E8E8",
+  
+};
 export const RegistrationScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [borderColor, setBorderColor] = useState(ColorBorders);
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex:1}}
+    <TouchableWithoutFeedback
+      onPress={() => {
+        setIsShowKeyboard(false);
+        Keyboard.dismiss();
+      }}
     >
-      <View style={styles.form}>
-        <View style={styles.avatarWrapper}>
-          <Image style={styles.avatar} />
-          <Image
-            style={styles.add}
-            source={require("../assets/images/add.png")}
-          />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <View style={styles.form}>
+          <View style={styles.avatarWrapper}>
+            <Image style={styles.avatar} />
+            <Image
+              style={styles.add}
+              source={require("../assets/images/add.png")}
+            />
+          </View>
+          <View style={styles.inputWrap}>
+            <Text style={styles.title}>Registration</Text>
+            <TextInput
+              style={[styles.input, { borderColor: borderColor.name }]}
+              onFocus={() => {
+                setIsShowKeyboard(true);
+                setBorderColor((prev) => ({ ...prev, name: "#FF6C00" }));
+              }}
+              onBlur={() => {
+                setBorderColor((prev) => ({ ...prev, name: "#E8E8E8" }));
+              }}
+            />
+            <TextInput
+              style={[styles.input, { borderColor: borderColor.email }]}
+              onFocus={() => {
+                setIsShowKeyboard(true);
+                setBorderColor((prev) => ({ ...prev, email: "#FF6C00" }));
+              }}
+              onBlur={() => {
+                setBorderColor((prev) => ({ ...prev, email: "#E8E8E8" }));
+              }}
+            />
+            <TextInput
+               style={[styles.input, { borderColor: borderColor.password }]}
+              onFocus={() => {
+                setIsShowKeyboard(true);
+                setBorderColor((prev) => ({ ...prev,  password: "#FF6C00" }));
+              }}
+              onBlur={() => {
+                setBorderColor((prev) => ({ ...prev,  password: "#E8E8E8" }));
+              }}
+            />
+            <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+              <Text style={styles.btnTitle}>Registration</Text>
+            </TouchableOpacity>
+            <Text style={styles.text}>
+              Do you have already account? Log in.
+            </Text>
+          </View>
         </View>
-        <View style={styles.inputWrap}>
-          <Text style={styles.title}>Registration</Text>
-          <TextInput style={styles.input} />
-          <TextInput style={styles.input} />
-          <TextInput style={styles.input} secureTextEntry={true} />
-          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-            <Text style={styles.btnTitle}>Registration</Text>
-                  </TouchableOpacity>
-                  <Text style={ styles.text}>Do you have already account? Log in.</Text>
-        </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -69,42 +103,36 @@ const styles = StyleSheet.create({
   },
 
   form: {
-   flex:1,
+    flex: 1,
     position: "relative",
     backgroundColor: "#FFFFFF",
     marginTop: 263,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
-// top:'35%',
-      justifyContent: "center",
-     
-   
-    // zIndex: 555,
+    // top:'35%',
+    justifyContent: "center",
   },
   input: {
     width: 343,
     height: 50,
     padding: 16,
-    borderColor: "#E8E8E8",
     borderWidth: 1,
     // marginBottom: 16,
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
   },
 
-    title: {
-      fontFamily: 'roboto',
+  title: {
+    fontFamily: "roboto",
     textAlign: "center",
     fontSize: 30,
-      fontWeight: 500,
-    
+    fontWeight: 500,
   },
   inputWrap: {
-
     marginHorizontal: 30,
-      gap: 16,
-      position:'absolute'
+    gap: 16,
+    position: "absolute",
     //   zIndex:777
   },
   btn: {
@@ -117,24 +145,21 @@ const styles = StyleSheet.create({
     paddingLeft: 32,
     justifyContent: "center",
     alignItems: "center",
-    marginTop:43
+    marginTop: 43,
   },
-    btnTitle: {
-    fontFamily: 'roboto',
+  btnTitle: {
+    fontFamily: "roboto",
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: 400,
-    },
-    text: {
-        fontFamily: 'roboto',
-        fontWeight: 400,
-fontSize: 16,
-lineHeight: 19,
-textAlign: "center",
-        color: "#1B4371",
-        marginTop: 16,
-
-
-    }
+  },
+  text: {
+    fontFamily: "roboto",
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    textAlign: "center",
+    color: "#1B4371",
+    marginTop: 16,
+  },
 });
-
