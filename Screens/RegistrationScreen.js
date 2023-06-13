@@ -7,40 +7,37 @@ import {
   TextInput,
   Button,
   Image,
-    TouchableOpacity,
-  KeyboardAvoidingView
+  TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 // import background from "../assets/images/photo-bg.png"
 
 export const RegistrationScreen = () => {
-    const[isShowKeyboard,setIsShowKeyboard]=useState(false)
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex:1}}>
-    <View style={styles.form}>
-      <View style={styles.avatarWrapper}>
-        <Image style={styles.avatar} />
-        <Image
-          style={styles.add}
-          source={require("../assets/images/add.png")}
-        />
-      </View>
-
-      <View style={styles.inputWrap}>
-        <Text style={styles.title}>Registration</Text>
-        <TextInput style={styles.input} />
-        <TextInput style={styles.input} />
-        <TextInput style={styles.input} secureTextEntry={true} />
-       
-        <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
-          <Text style={styles.btnTitle}>Registration</Text>
-        </TouchableOpacity>
-          </View>
-          
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <View style={styles.form}>
+        <View style={styles.avatarWrapper}>
+          <Image style={styles.avatar} />
+          <Image
+            style={styles.add}
+            source={require("../assets/images/add.png")}
+          />
         </View>
-       </KeyboardAvoidingView>
-
-  
+        <View style={styles.inputWrap}>
+          <Text style={styles.title}>Registration</Text>
+          <TextInput style={styles.input} />
+          <TextInput style={styles.input} />
+          <TextInput style={styles.input} secureTextEntry={true} />
+          <TouchableOpacity activeOpacity={0.8} style={styles.btn}>
+            <Text style={styles.btnTitle}>Registration</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -60,34 +57,18 @@ const styles = StyleSheet.create({
     top: 81,
     right: -10,
   },
-  // circle: {
-  //     display: "flex",
-  //     borderWidth: 1,
-  //     borderRadius: 50,
-  //     width: 25,
-  //     height: 25,
-  //     justifyContent: "center",
-  //     alignItems: 'center',
-  //      borderColor: "#FF6C00",
-  // },
 
-  // plus: {
-  //     fontSize: 25,
-  //     color: "#FF6C00",
-  //     top:-5
-
-  // },
   form: {
     flex: 1,
-
+    position: "relative",
     backgroundColor: "#FFFFFF",
-    // height: 549,
     marginTop: 263,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
+    //    top:"32%",
     justifyContent: "center",
-    marginHorizontal: 16,
+    zIndex: 555,
   },
   input: {
     width: 343,
@@ -95,17 +76,20 @@ const styles = StyleSheet.create({
     padding: 16,
     borderColor: "#E8E8E8",
     borderWidth: 1,
-    marginBottom: 16,
+    // marginBottom: 16,
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
   },
 
   title: {
+    textAlign: "center",
     fontSize: 30,
     fontWeight: 500,
   },
   inputWrap: {
+    marginTop: 10,
     marginHorizontal: 30,
+    gap: 16,
   },
   btn: {
     backgroundColor: "#FF6C00",
@@ -117,6 +101,7 @@ const styles = StyleSheet.create({
     paddingLeft: 32,
     justifyContent: "center",
     alignItems: "center",
+    // marginTop:43
   },
   btnTitle: {
     color: "#FFFFFF",
@@ -124,3 +109,4 @@ const styles = StyleSheet.create({
     fontWeight: 400,
   },
 });
+
