@@ -59,16 +59,17 @@ const styles = StyleSheet.create({
   },
 
   form: {
-    flex: 1,
+   flex:1,
     position: "relative",
     backgroundColor: "#FFFFFF",
     marginTop: 263,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: "center",
-    //    top:"32%",
-    justifyContent: "center",
-    zIndex: 555,
+
+      justifyContent: "center",
+   
+    // zIndex: 555,
   },
   input: {
     width: 343,
@@ -84,12 +85,15 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 30,
-    fontWeight: 500,
+      fontWeight: 500,
+    
   },
   inputWrap: {
-    marginTop: 10,
+    // marginTop: 92,
     marginHorizontal: 30,
-    gap: 16,
+      gap: 16,
+      position:'absolute'
+    //   zIndex:777
   },
   btn: {
     backgroundColor: "#FF6C00",
