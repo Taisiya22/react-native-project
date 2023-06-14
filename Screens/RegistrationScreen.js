@@ -1,30 +1,32 @@
 import { useState, useEffect } from "react";
 import {
-  ImageBackground,
   StyleSheet,
   Text,
   View,
   TextInput,
-  Button,
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
-const removeAvatar = null;
+import * as ImagePicker from "expo-image-picker";
+
+
 const intialRegistration = {
-  name: "",
+  login: "",
   email: "",
   password: "",
 };
+
+const width = Dimensions.get("window").width;
 export const RegistrationScreen = () => {
+  const [image, setImage] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [registration, setRegistration] = useState(intialRegistration);
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
-  const [image, setImage] = useState(removeAvatar);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -34,14 +36,11 @@ export const RegistrationScreen = () => {
       quality: 1,
     });
 
-    // console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+    } else {
+      setImage(null);
     }
-    else {
-      setImage(removeAvatar)
-     }
   };
 
   useEffect(() => {
@@ -51,7 +50,6 @@ export const RegistrationScreen = () => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    // console.log(registration);
     setRegistration(intialRegistration);
   };
 
@@ -62,61 +60,81 @@ export const RegistrationScreen = () => {
         Keyboard.dismiss();
       }}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <View style={styles.form}>
-          <View style={styles.avatarWrapper}>
-            {/* <Image style={styles.avatar} /> */}
-            <TouchableOpacity onPress={pickImage}>
-              {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
-              {!image && <Image
+      <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.8 : 0.7 }}>
+        <View style={{ ...styles.imageWrapper, left: (width - 120) / 2 }}>
+          <TouchableOpacity onPress={pickImage}>
+            {image && (
+              <Image
+                source={{ uri: image }}
+                style={{ width: 120, height: 120, borderRadius: 16 }}
+              />
+            )}
+            {!image && (
+              <Image
                 fadeDuration={0}
-              style={styles.add}
-              source={require("../assets/images/add.png")}
-              /> }
-              { image && <Image
-                            fadeDuration={0}
-                            style={styles.add} source={require('../assets/images/remove.png')} />}
-              </TouchableOpacity>
-          </View>
-          <View style={styles.inputWrap}>
-            <Text style={styles.title}>Реєстрація</Text>
-            <TextInput
-              style={{
-                ...styles.input,
-                borderColor: activeInput === "login" ? "#FF6C00" : "#f6f6f6",
-              }}
-              value={registration.login}
-              placeholder="Логін"
-              onChangeText={(value) =>
-                setRegistration((prevState) => ({ ...prevState, login: value }))
-              }
-              onFocus={() => setActiveInput("login")}
-              placeholderTextColor="#BDBDBD"
-            />
-            <TextInput
-              style={{
-                ...styles.input,
-                borderColor: activeInput === "email" ? "#FF6C00" : "#f6f6f6",
-              }}
-              value={registration.email}
-              placeholder="Адреса електронної пошти"
-              onChangeText={(value) =>
-                setRegistration((prevState) => ({ ...prevState, email: value }))
-              }
-              onFocus={() => setActiveInput("email")}
-              placeholderTextColor="#BDBDBD"
-            />
+                style={styles.add}
+                source={require("../assets/images/add.png")}
+              />
+            )}
+            {image && (
+              <Image
+                fadeDuration={0}
+                style={styles.remove}
+                source={require("../assets/images/remove.png")}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.text}>Реєстрація</Text>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+          <View style={{ ...styles.inputWrapper }}>
             <View>
+              <TextInput
+                style={{
+                  ...styles.input,
+                  borderColor: activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+                }}
+                value={registration.login}
+                placeholder="Логін"
+                onChangeText={(value) =>
+                  setRegistration((prevState) => ({
+                    ...prevState,
+                    login: value,
+                  }))
+                }
+                onFocus={() => setActiveInput("login")}
+                placeholderTextColor="#BDBDBD"
+              />
+            </View>
+            <View>
+              <TextInput
+                style={{
+                  ...styles.input,
+                  borderColor: activeInput === "email" ? "#FF6C00" : "#f6f6f6",
+                }}
+                value={registration.email}
+                placeholder="Адреса електронної пошти"
+                onChangeText={(value) =>
+                  setRegistration((prevState) => ({
+                    ...prevState,
+                    email: value,
+                  }))
+                }
+                onFocus={() => setActiveInput("email")}
+                placeholderTextColor="#BDBDBD"
+              />
+            </View>
+            <View>
+             
               <TextInput
                 style={{
                   ...styles.input,
                   borderColor:
                     activeInput === "password" ? "#FF6C00" : "#f6f6f6",
                 }}
-                value={registration.pass}
+                value={registration.password}
                 placeholder="Пароль"
                 onChangeText={(value) =>
                   setRegistration((prevState) => ({
@@ -128,7 +146,6 @@ export const RegistrationScreen = () => {
                 placeholderTextColor="#BDBDBD"
                 secureTextEntry={showPassword}
               />
-
               <Text
                 style={styles.showPassword}
                 onPress={() => setShowPassword(false)}
@@ -136,102 +153,101 @@ export const RegistrationScreen = () => {
                 Показати
               </Text>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.btn}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.btnTitle}>Реєстрація</Text>
-            </TouchableOpacity>
-            <Text style={styles.text}>Вже є акаунт? Увійти.</Text>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+        <TouchableOpacity
+          style={{ ...styles.submitBtn, width: width - 32 }}
+          activeOpacity={0.8}
+          onPress={handleSubmit}
+        >
+          <Text style={styles.submitTitle}>Зареєструватися</Text>
+        </TouchableOpacity>
+        <Text style={styles.logo}>Вже є акаунт? Увійти</Text>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  // avatar: {
-  //   width: 120,
-  //   height: 120,
-  //   backgroundColor: "#F6F6F6",
-  //   borderRadius: 16,
-  // },
-  avatarWrapper: {
-    top: -60,
+  wrapper: {
+    backgroundColor: "#FFFFFF",
+    position: "relative",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+  },
+  text: {
+    textAlign: "center",
+    color: "#212121",
+    paddingTop: 92,
+    fontSize: 30,
+  },
+  imageWrapper: {
     position: "absolute",
+    top: -60,
+    borderRadius: 16,
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
+    // zIndex:1,
+  },
+  avatar: {
+    width: 120,
+    height: 120,
     borderRadius: 16,
   },
-  add: {
-    position: "absolute",
-    top: 81,
-    right: -10,
-  },
-
-  form: {
-    flex: 1,
-    position: "relative",
-    backgroundColor: "#FFFFFF",
-    marginTop: 263,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    alignItems: "center",
-    // top:'35%',
-    justifyContent: "center",
+  inputWrapper: {
+    paddingRight: 16,
+    paddingLeft: 16,
+    paddingTop: 32,
+    paddingBottom: 43,
+    gap: 16,
   },
   input: {
     width: 343,
     height: 50,
     padding: 16,
     borderWidth: 1,
-    // borderColor:"#E8E8E8",
-    // marginBottom: 16,
     backgroundColor: "#F6F6F6",
     borderRadius: 8,
   },
 
-  title: {
-    fontFamily: "roboto",
-    textAlign: "center",
-    fontSize: 30,
-    fontWeight: 500,
-  },
-  inputWrap: {
-    marginHorizontal: 30,
-    gap: 16,
-    position: "absolute",
-    //   zIndex:777
-  },
-  btn: {
+  submitBtn: {
+    marginRight: 16,
+    marginLeft: 16,
+    height: 51,
     backgroundColor: "#FF6C00",
-    borderRadius: 100,
-    color: "#FFFFFF",
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingRight: 32,
-    paddingLeft: 32,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 43,
+    borderRadius: 100,
   },
-  btnTitle: {
-    fontFamily: "roboto",
+  submitTitle: {
     color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: 400,
+    textAlign: "center",
   },
-  text: {
-    fontFamily: "roboto",
-    fontWeight: 400,
-    fontSize: 16,
-    lineHeight: 19,
+  logo: {
+    paddingTop: 16,
     textAlign: "center",
     color: "#1B4371",
-    marginTop: 16,
+  },
+
+  iconContainer: {
+    zIndex: 999,
+  },
+  add: {
+    position: "absolute",
+    top: 90,
+    right: -10,
+    width: 25,
+    height: 25,
+    resizeMode: "cover",
+  },
+  remove: {
+    position: "absolute",
+    top: 86,
+    right: -17,
+    width: 37,
+    height: 37,
+    resizeMode: "cover",
   },
   showPassword: {
     fontFamily: "roboto",
