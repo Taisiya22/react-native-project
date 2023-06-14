@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TextInput,
-  Image,
   TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -27,21 +26,7 @@ export const LoginScreen = () => {
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    } else {
-      setImage(null);
-    }
-  };
-
+ 
   useEffect(() => {
     setIsShowKeyboard(false);
   }, [handleSubmit]);
