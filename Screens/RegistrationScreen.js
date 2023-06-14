@@ -13,11 +13,6 @@ import {
   Keyboard,
 } from "react-native";
 
-const ColorBorders = {
-  name: "#E8E8E8",
-  email: "#E8E8E8",
-  password: "#E8E8E8",
-};
 const intialRegistration = {
   name: "",
   email: "",
@@ -25,9 +20,9 @@ const intialRegistration = {
 };
 export const RegistrationScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [borderColor, setBorderColor] = useState(ColorBorders);
   const [registration, setRegistration] = useState(intialRegistration);
   const [activeInput, setActiveInput] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
 
   useEffect(() => {
     setIsShowKeyboard(false);
@@ -36,7 +31,7 @@ export const RegistrationScreen = () => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    console.log(registration);
+    // console.log(registration);
     setRegistration(intialRegistration);
   };
 
@@ -60,7 +55,7 @@ export const RegistrationScreen = () => {
             />
           </View>
           <View style={styles.inputWrap}>
-            <Text style={styles.title}>Registration</Text>
+            <Text style={styles.title}>Реєстрація</Text>
             <TextInput
               style={{
                 ...styles.input,
@@ -87,32 +82,41 @@ export const RegistrationScreen = () => {
               onFocus={() => setActiveInput("email")}
               placeholderTextColor="#BDBDBD"
             />
-            <TextInput
-              style={{
-                ...styles.input,
-                borderColor: activeInput === "password" ? "#FF6C00" : "#f6f6f6",
-              }}
-              value={registration.pass}
-              placeholder="Пароль"
-              onChangeText={(value) =>
-                setRegistration((prevState) => ({
-                  ...prevState,
-                  password: value,
-                }))
-              }
-              onFocus={() => setActiveInput("password")}
-              placeholderTextColor="#BDBDBD"
-            />
+            <View>
+              <TextInput
+                style={{
+                  ...styles.input,
+                  borderColor:
+                    activeInput === "password" ? "#FF6C00" : "#f6f6f6",
+                }}
+                value={registration.pass}
+                placeholder="Пароль"
+                onChangeText={(value) =>
+                  setRegistration((prevState) => ({
+                    ...prevState,
+                    password: value,
+                  }))
+                }
+                onFocus={() => setActiveInput("password")}
+                placeholderTextColor="#BDBDBD"
+                secureTextEntry={showPassword}
+              />
+
+              <Text
+                style={styles.showPassword}
+                onPress={() => setShowPassword(false)}
+              >
+                Показати
+              </Text>
+            </View>
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.btn}
               onPress={handleSubmit}
             >
-              <Text style={styles.btnTitle}>Registration</Text>
+              <Text style={styles.btnTitle}>Реєстрація</Text>
             </TouchableOpacity>
-            <Text style={styles.text}>
-              Do you have already account? Log in.
-            </Text>
+            <Text style={styles.text}>Вже є акаунт? Увійти.</Text>
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -197,5 +201,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#1B4371",
     marginTop: 16,
+  },
+  showPassword: {
+    fontFamily: "roboto",
+    position: "absolute",
+    top: 16,
+    right: 32,
+    fontweight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
   },
 });
