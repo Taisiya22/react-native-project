@@ -17,30 +17,29 @@ const ColorBorders = {
   name: "#E8E8E8",
   email: "#E8E8E8",
   password: "#E8E8E8",
-  
 };
 const intialRegistration = {
-  name: '',
-  email: '',
-  password: '',
-}
+  name: "",
+  email: "",
+  password: "",
+};
 export const RegistrationScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-    const [borderColor, setBorderColor] = useState(ColorBorders);
-    const [registration, setRegistration] = useState(intialRegistration);
-     const [activeInput,setActiveInput]=useState('');
-   
-useEffect(() => {
-        setIsShowKeyboard(false)
-    }, [handleSubmit])
+  const [borderColor, setBorderColor] = useState(ColorBorders);
+  const [registration, setRegistration] = useState(intialRegistration);
+  const [activeInput, setActiveInput] = useState("");
 
-    const handleSubmit = () => {
-        Keyboard.dismiss()
-        setIsShowKeyboard(false)
-        console.log(registration)
-        setRegistration(intialRegistration)
-    }
-    
+  useEffect(() => {
+    setIsShowKeyboard(false);
+  }, [handleSubmit]);
+
+  const handleSubmit = () => {
+    Keyboard.dismiss();
+    setIsShowKeyboard(false);
+    console.log(registration);
+    setRegistration(intialRegistration);
+  };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -62,36 +61,54 @@ useEffect(() => {
           </View>
           <View style={styles.inputWrap}>
             <Text style={styles.title}>Registration</Text>
-                      <TextInput
-                          style={{ ...styles.input, borderColor:activeInput==='login'?'#FF6C00':'#f6f6f6'}}
-                            value={registration.login}
-                            placeholder='Логін'  
-                            onChangeText={(value) => setRegistration((prevState) =>({...prevState, login: value})) }
-                                onFocus={()=>setActiveInput('login')}
-                                placeholderTextColor='#BDBDBD'
-            
+            <TextInput
+              style={{
+                ...styles.input,
+                borderColor: activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+              }}
+              value={registration.login}
+              placeholder="Логін"
+              onChangeText={(value) =>
+                setRegistration((prevState) => ({ ...prevState, login: value }))
+              }
+              onFocus={() => setActiveInput("login")}
+              placeholderTextColor="#BDBDBD"
             />
-                      <TextInput
-                          style={{ ...styles.input,borderColor:activeInput==='email'?'#FF6C00':'#f6f6f6' }}
-                        value={registration.email}
-                        placeholder='Адреса електронної пошти'
-                        onChangeText={(value) => setRegistration((prevState) => ({ ...prevState, email: value }))}
-                                onFocus={()=>setActiveInput('email')}
-                                placeholderTextColor ='#BDBDBD' 
-            
+            <TextInput
+              style={{
+                ...styles.input,
+                borderColor: activeInput === "email" ? "#FF6C00" : "#f6f6f6",
+              }}
+              value={registration.email}
+              placeholder="Адреса електронної пошти"
+              onChangeText={(value) =>
+                setRegistration((prevState) => ({ ...prevState, email: value }))
+              }
+              onFocus={() => setActiveInput("email")}
+              placeholderTextColor="#BDBDBD"
             />
-                      <TextInput
-                          style={{ ...styles.input, borderColor:activeInput==='password'?'#FF6C00':'#f6f6f6'}}
-                    value={registration.pass}
-                    placeholder='Пароль'  
-                    onChangeText={(value) => setRegistration((prevState) =>({...prevState, password: value})) }
-                    // secureTextEntry={seePass}
-                                onFocus={()=>setActiveInput('password')}
-                                placeholderTextColor ='#BDBDBD'
-            
+            <TextInput
+              style={{
+                ...styles.input,
+                borderColor: activeInput === "password" ? "#FF6C00" : "#f6f6f6",
+              }}
+              value={registration.pass}
+              placeholder="Пароль"
+              onChangeText={(value) =>
+                setRegistration((prevState) => ({
+                  ...prevState,
+                  password: value,
+                }))
+              }
+              onFocus={() => setActiveInput("password")}
+              placeholderTextColor="#BDBDBD"
             />
-            <TouchableOpacity activeOpacity={0.8} style={styles.btn} onPress={handleSubmit}>
-              <Text style={styles.btnTitle} >Registration</Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.btn}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.btnTitle}>Registration</Text>
             </TouchableOpacity>
             <Text style={styles.text}>
               Do you have already account? Log in.
@@ -135,7 +152,7 @@ const styles = StyleSheet.create({
     width: 343,
     height: 50,
     padding: 16,
-      borderWidth: 1,
+    borderWidth: 1,
     // borderColor:"#E8E8E8",
     // marginBottom: 16,
     backgroundColor: "#F6F6F6",
