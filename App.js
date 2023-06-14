@@ -2,6 +2,7 @@
 import {ImageBackground, StyleSheet, View, Dimensions} from 'react-native';
 import { RegistrationScreen }  from './Screens/RegistrationScreen';
 import { useFonts } from 'expo-font';
+import { LoginScreen } from './Screens/LoginScreen';
 
 
 
@@ -12,33 +13,18 @@ const App = () => {
   if (!fontsLoaded) return null;
   return( <View style={styles.container}>
     <ImageBackground source={require('./assets/images/photo-bg.jpg')} style={styles.image}>
-      <RegistrationScreen/>
+      {/* <RegistrationScreen/> */}
+      <LoginScreen/>
     </ImageBackground>
   </View>)
  
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   image: {
-    // resizeMode: 'cover',
-    // position: 'absolute',
-    // flex: 1,
-    // width: Dimensions.get('window').width,
-    // height: Dimensions.get('window').height,
-    // zIndex: -1,
-//     // justifyContent:'flex-end'
-   
-//   }
-// });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   image: {
     flex: 1,
