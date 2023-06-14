@@ -12,7 +12,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-
+import * as ImagePicker from 'expo-image-picker';
+const removeAvatar = null;
 const intialRegistration = {
   name: "",
   email: "",
@@ -23,6 +24,25 @@ export const RegistrationScreen = () => {
   const [registration, setRegistration] = useState(intialRegistration);
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+  const [image, setImage] = useState(removeAvatar);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    // console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+    else {
+      setImage(removeAvatar)
+     }
+  };
 
   useEffect(() => {
     setIsShowKeyboard(false);
@@ -48,11 +68,18 @@ export const RegistrationScreen = () => {
       >
         <View style={styles.form}>
           <View style={styles.avatarWrapper}>
-            <Image style={styles.avatar} />
-            <Image
+            {/* <Image style={styles.avatar} /> */}
+            <TouchableOpacity onPress={pickImage}>
+              {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
+              {!image && <Image
+                fadeDuration={0}
               style={styles.add}
               source={require("../assets/images/add.png")}
-            />
+              /> }
+              { image && <Image
+                            fadeDuration={0}
+                            style={styles.add} source={require('../assets/images/remove.png')} />}
+              </TouchableOpacity>
           </View>
           <View style={styles.inputWrap}>
             <Text style={styles.title}>Реєстрація</Text>
@@ -125,15 +152,19 @@ export const RegistrationScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  avatar: {
+  // avatar: {
+  //   width: 120,
+  //   height: 120,
+  //   backgroundColor: "#F6F6F6",
+  //   borderRadius: 16,
+  // },
+  avatarWrapper: {
+    top: -60,
+    position: "absolute",
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
-  },
-  avatarWrapper: {
-    top: -60,
-    position: "absolute",
   },
   add: {
     position: "absolute",
@@ -207,7 +238,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 16,
     right: 32,
-    fontweight: 400,
+    fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
