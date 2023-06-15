@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
+  ImageBackground
 } from "react-native";
 
 
@@ -26,7 +27,10 @@ export const LoginScreen = () => {
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
- 
+ const closeKeyboard = () => {setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  }
+  
   useEffect(() => {
     setIsShowKeyboard(false);
   }, [handleSubmit]);
@@ -34,15 +38,18 @@ export const LoginScreen = () => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
+    console.log(registration);
     setRegistration(intialRegistration);
+    
   };
 
   return (
+     <TouchableWithoutFeedback
+      onPress={closeKeyboard}
+    >
+     <ImageBackground source={require('../assets/images/photo-bg.jpg')} style={styles.image}>
     <TouchableWithoutFeedback
-      onPress={() => {
-        setIsShowKeyboard(false);
-        Keyboard.dismiss();
-      }}
+      onPress={closeKeyboard}
     >
       <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.65 : 0.6 }}>
         
@@ -108,7 +115,9 @@ export const LoginScreen = () => {
         </TouchableOpacity>
         <Text style={styles.logo}>Немає акаунту? Зареєструватися</Text>
       </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      </ImageBackground>
+      </TouchableWithoutFeedback>
   );
 };
 
@@ -186,5 +195,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
+  },
+  image: {
+    flex: 1,
+      justifyContent: 'center',
+      resizeMode: 'cover',
+    justifyContent: 'flex-end',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+   
   },
 });

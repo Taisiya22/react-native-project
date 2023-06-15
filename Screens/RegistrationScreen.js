@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
+  ImageBackground
 } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -53,15 +54,18 @@ export const RegistrationScreen = () => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
+    console.log(registration)
     setRegistration(intialRegistration);
   };
-
+  const closeKeyboard = () => {setIsShowKeyboard(false);
+        Keyboard.dismiss(); }
   return (
+     <TouchableWithoutFeedback
+      onPress={closeKeyboard}
+    >
+ <ImageBackground source={require('../assets/images/photo-bg.jpg')} style={styles.image}>
     <TouchableWithoutFeedback
-      onPress={() => {
-        setIsShowKeyboard(false);
-        Keyboard.dismiss();
-      }}
+      onPress={closeKeyboard}
     >
       <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.8 : 0.7 }}>
         
@@ -159,7 +163,9 @@ export const RegistrationScreen = () => {
         </TouchableOpacity>
         <Text style={styles.logo}>Вже є акаунт? Увійти</Text>
       </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+      </ImageBackground>
+      </TouchableWithoutFeedback>
   );
 };
 
@@ -257,5 +263,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
     zIndex:999
+  },
+  image: {
+    flex: 1,
+      justifyContent: 'center',
+      resizeMode: 'cover',
+    justifyContent: 'flex-end',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+   
   },
 });
