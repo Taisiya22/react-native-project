@@ -11,7 +11,7 @@ import {
   Keyboard,
   Dimensions,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import * as ImagePicker from 'expo-image-picker';
 
 
 const intialRegistration = {
@@ -36,11 +36,14 @@ export const RegistrationScreen = () => {
       quality: 1,
     });
 
+    // console.log(result);
+
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-    } else {
-      setImage(null);
     }
+    else {
+      setImage(null)
+     }
   };
 
   useEffect(() => {
@@ -61,29 +64,21 @@ export const RegistrationScreen = () => {
       }}
     >
       <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.8 : 0.7 }}>
-        <View style={{ ...styles.imageWrapper, left: (width - 120) / 2 }}>
-          <TouchableOpacity onPress={pickImage}>
-            {image && (
-              <Image
-                source={{ uri: image }}
-                style={{ width: 120, height: 120, borderRadius: 16 }}
-              />
-            )}
-            {!image && (
-              <Image
-                fadeDuration={0}
-                style={styles.add}
-                source={require("../assets/images/add.png")}
-              />
-            )}
-            {image && (
-              <Image
-                fadeDuration={0}
-                style={styles.remove}
-                source={require("../assets/images/remove.png")}
-              />
-            )}
-          </TouchableOpacity>
+        
+        <View style={{ ...styles.avatarWrapper, left: (width - 120) / 2 }}>
+          
+           <TouchableOpacity onPress={pickImage}>
+              {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
+            {!image && <Image
+              fadeDuration={0}
+              style={styles.add}
+              source={require("../assets/images/add.png")}
+            />}
+              
+              { image && <Image
+                            fadeDuration={0}
+                            style={styles.remove} source={require('../assets/images/remove.png')} />}
+              </TouchableOpacity>
         </View>
         <Text style={styles.text}>Реєстрація</Text>
         <KeyboardAvoidingView
@@ -174,6 +169,7 @@ const styles = StyleSheet.create({
     position: "relative",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+   
   },
   text: {
     textAlign: "center",
@@ -188,7 +184,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
-    // zIndex:1,
+   
   },
   avatar: {
     width: 120,
@@ -196,11 +192,11 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   inputWrapper: {
-    paddingRight: 16,
-    paddingLeft: 16,
+    marginHorizontal: 30,
+    gap: 16,
     paddingTop: 32,
     paddingBottom: 43,
-    gap: 16,
+    
   },
   input: {
     width: 343,
@@ -230,24 +226,18 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 
-  iconContainer: {
-    zIndex: 999,
-  },
+  
   add: {
-    position: "absolute",
-    top: 90,
+     position: "absolute",
+    top: 81,
     right: -10,
-    width: 25,
-    height: 25,
-    resizeMode: "cover",
+    
   },
   remove: {
     position: "absolute",
-    top: 86,
-    right: -17,
-    width: 37,
-    height: 37,
-    resizeMode: "cover",
+    top: 81,
+    right: -18,
+
   },
   showPassword: {
     fontFamily: "roboto",
@@ -258,5 +248,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
+  },
+  avatarWrapper: {
+    top: -60,
+    position: "absolute",
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+    zIndex:999
   },
 });

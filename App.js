@@ -13,8 +13,8 @@ const App = () => {
   if (!fontsLoaded) return null;
   return( <View style={styles.container}>
     <ImageBackground source={require('./assets/images/photo-bg.jpg')} style={styles.image}>
-      {/* <RegistrationScreen/> */}
-      <LoginScreen/>
+      <RegistrationScreen/>
+      {/* <LoginScreen/> */}
     </ImageBackground>
   </View>)
  
@@ -25,12 +25,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: "center",
   },
   image: {
     flex: 1,
       justifyContent: 'center',
       resizeMode: 'cover',
-      justifyContent:'flex-end',
+    justifyContent: 'flex-end',
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
    
