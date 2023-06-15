@@ -54,7 +54,7 @@ export const RegistrationScreen = () => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    console.log(registration)
+    console.log(registration )
     setRegistration(intialRegistration);
   };
   const closeKeyboard = () => {setIsShowKeyboard(false);
