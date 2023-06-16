@@ -1,22 +1,35 @@
 // import React from 'react';
-import { StyleSheet, View, Dimensions} from 'react-native';
-import { RegistrationScreen }  from './Screens/RegistrationScreen';
+import { StyleSheet, View, Dimensions } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RegistrationScreen } from './Screens/auth/RegistrationScreen';
 import { useFonts } from 'expo-font';
-import { LoginScreen } from './Screens/LoginScreen';
+import { LoginScreen } from './Screens/auth/LoginScreen';
 
-
+const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
     'roboto':require('./assets/fonts/Roboto/Roboto-Medium.ttf')
     });
   if (!fontsLoaded) return null;
-  return( <View style={styles.container}>
-   
-      <RegistrationScreen/>
-      {/* <LoginScreen/> */}
+
+  const AuthStack = createNativeStackNavigator();
   
-  </View>)
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <AuthStack.Screen name="registration" component={RegistrationScreen} />
+        <AuthStack.Screen name="login" component={LoginScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <View style={styles.container}>
+   
+    //   <RegistrationScreen/>
+    //   {/* <LoginScreen/> */}
+  
+    // </View>
+  )
  
 }
 

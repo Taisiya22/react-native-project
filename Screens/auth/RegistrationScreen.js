@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
+  Image,
   TouchableOpacity,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
@@ -12,25 +12,41 @@ import {
   Dimensions,
   ImageBackground
 } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
 
 
 const intialRegistration = {
+  login: "",
   email: "",
   password: "",
 };
 
 const width = Dimensions.get("window").width;
-export const LoginScreen = () => {
-  
+export const RegistrationScreen = () => {
+  const [image, setImage] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [registration, setRegistration] = useState(intialRegistration);
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
- const closeKeyboard = () => {setIsShowKeyboard(false);
-    Keyboard.dismiss();
-  }
-  
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    // console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+    else {
+      setImage(null)
+     }
+  };
+
   useEffect(() => {
     setIsShowKeyboard(false);
   }, [handleSubmit]);
@@ -38,27 +54,59 @@ export const LoginScreen = () => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    console.log(registration);
+    console.log(registration )
     setRegistration(intialRegistration);
-    
   };
-
+  const closeKeyboard = () => {setIsShowKeyboard(false);
+        Keyboard.dismiss(); }
   return (
      <TouchableWithoutFeedback
       onPress={closeKeyboard}
     >
-     <ImageBackground source={require('../assets/images/photo-bg.jpg')} style={styles.image}>
+ <ImageBackground source={require('../../assets/images/photo-bg.jpg')} style={styles.image}>
     <TouchableWithoutFeedback
       onPress={closeKeyboard}
     >
-      <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.65 : 0.6 }}>
+      <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.8 : 0.7 }}>
         
-        <Text style={styles.text}>Увійти</Text>
+        <View style={{ ...styles.avatarWrapper, left: (width - 120) / 2 }}>
+          
+           <TouchableOpacity onPress={pickImage}>
+              {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
+            {!image && <Image
+              fadeDuration={0}
+              style={styles.add}
+              source={require("../../assets/images/add.png")}
+            />}
+              
+              { image && <Image
+                            fadeDuration={0}
+                            style={styles.remove} source={require('../../assets/images/remove.png')} />}
+              </TouchableOpacity>
+        </View>
+        <Text style={styles.text}>Реєстрація</Text>
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
         >
           <View style={{ ...styles.inputWrapper }}>
-            
+            <View>
+              <TextInput
+                style={{
+                  ...styles.input,
+                  borderColor: activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+                }}
+                value={registration.login}
+                placeholder="Логін"
+                onChangeText={(value) =>
+                  setRegistration((prevState) => ({
+                    ...prevState,
+                    login: value,
+                  }))
+                }
+                onFocus={() => setActiveInput("login")}
+                placeholderTextColor="#BDBDBD"
+              />
+            </View>
             <View>
               <TextInput
                 style={{
@@ -113,7 +161,7 @@ export const LoginScreen = () => {
         >
           <Text style={styles.submitTitle}>Зареєструватися</Text>
         </TouchableOpacity>
-        <Text style={styles.logo}>Немає акаунту? Зареєструватися</Text>
+        <Text style={styles.logo}>Вже є акаунт? Увійти</Text>
       </View>
       </TouchableWithoutFeedback>
       </ImageBackground>
@@ -127,20 +175,34 @@ const styles = StyleSheet.create({
     position: "relative",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+   
   },
   text: {
     textAlign: "center",
     color: "#212121",
-    paddingTop: 32,
+    paddingTop: 92,
     fontSize: 30,
   },
-  
+  imageWrapper: {
+    position: "absolute",
+    top: -60,
+    borderRadius: 16,
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+   
+  },
+  avatar: {
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+  },
   inputWrapper: {
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingTop: 33,
-    paddingBottom: 43,
+    marginHorizontal: 30,
     gap: 16,
+    paddingTop: 32,
+    paddingBottom: 43,
+    
   },
   input: {
     width: 343,
@@ -170,21 +232,18 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 
+  
   add: {
-    position: "absolute",
-    top: 90,
+     position: "absolute",
+    top: 81,
     right: -10,
-    width: 25,
-    height: 25,
-    resizeMode: "cover",
+    
   },
   remove: {
     position: "absolute",
-    top: 86,
-    right: -17,
-    width: 37,
-    height: 37,
-    resizeMode: "cover",
+    top: 81,
+    right: -18,
+
   },
   showPassword: {
     fontFamily: "roboto",
@@ -195,6 +254,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
+  },
+  avatarWrapper: {
+    top: -60,
+    position: "absolute",
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+    zIndex:999
   },
   image: {
     flex: 1,
