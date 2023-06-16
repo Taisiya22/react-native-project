@@ -10,7 +10,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
-  ImageBackground
+  ImageBackground, 
+  Button
 } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -22,7 +23,7 @@ const intialRegistration = {
 };
 
 const width = Dimensions.get("window").width;
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({navigation }) => {
   const [image, setImage] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [registration, setRegistration] = useState(intialRegistration);
@@ -161,7 +162,8 @@ export const RegistrationScreen = () => {
         >
           <Text style={styles.submitTitle}>Зареєструватися</Text>
         </TouchableOpacity>
-        <Text style={styles.logo}>Вже є акаунт? Увійти</Text>
+            <Text style={styles.logo}>Вже є акаунт?<Text onPress={() => { navigation.navigate('login') }}>Увійти</Text> </Text>
+    
       </View>
       </TouchableWithoutFeedback>
       </ImageBackground>

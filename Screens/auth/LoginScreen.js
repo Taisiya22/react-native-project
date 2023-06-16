@@ -20,7 +20,7 @@ const intialRegistration = {
 };
 
 const width = Dimensions.get("window").width;
-export const LoginScreen = () => {
+export const LoginScreen = ({navigation}) => {
   
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [registration, setRegistration] = useState(intialRegistration);
@@ -113,7 +113,7 @@ export const LoginScreen = () => {
         >
           <Text style={styles.submitTitle}>Зареєструватися</Text>
         </TouchableOpacity>
-        <Text style={styles.logo}>Немає акаунту? Зареєструватися</Text>
+        <Text style={styles.logo}>Немає акаунту?<Text onPress={() => { navigation.navigate('registration') }}>Зареєструватися</Text> </Text>
       </View>
       </TouchableWithoutFeedback>
       </ImageBackground>
