@@ -112,8 +112,13 @@ export const LoginScreen = ({navigation}) => {
           onPress={handleSubmit}
         >
           <Text style={styles.submitTitle}>Зареєструватися</Text>
-        </TouchableOpacity>
-        <Text style={styles.logo}>Немає акаунту?<Text onPress={() => { navigation.navigate('registration') }}>Зареєструватися</Text> </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginTop: 16 }} onPress={() => { navigation.navigate('registration') }} activeOpacity={0.8}>
+              <Text style={styles.logo}>Немає акаунту?
+                <Text >Зареєструватися </Text>
+              </Text>
+            </TouchableOpacity> 
+        
       </View>
       </TouchableWithoutFeedback>
       </ImageBackground>
@@ -165,7 +170,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   logo: {
-    paddingTop: 16,
     textAlign: "center",
     color: "#1B4371",
   },

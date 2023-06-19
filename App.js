@@ -24,7 +24,7 @@ const App = () => {
           component={RegistrationScreen}
           options={{ headerShown: false }}
         />
-        <AuthStack.Screen name="login" component={LoginScreen} />
+        <AuthStack.Screen name="login" component={LoginScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
     // <View style={styles.container}>
