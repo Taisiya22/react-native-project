@@ -1,36 +1,10 @@
-// import React from 'react';
-import { StyleSheet, View, Dimensions } from "react-native";
+import React from 'react';
+import { StyleSheet} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { RegistrationScreen } from "./Screens/auth/RegistrationScreen";
 import { useFonts } from "expo-font";
-import { LoginScreen } from "./Screens/auth/LoginScreen";
-import { createBottomTabNavigator} from "@react-navigation/bottom-tabs"
-import { PostsScreen } from "./Screens/main/PostsScreen";
-import { CreatePostsScreen } from "./Screens/main/CreatePostsScreen";
-import { ProfileScreen } from "./Screens/main/ProfileScreen";
 
-const Stack = createNativeStackNavigator();
- const AuthStack = createNativeStackNavigator();
-  const MainTab = createBottomTabNavigator();
+import {useRoute} from "./helpers/useRoute.js"
 
-const useRoute = (isAuth) => {
-  if (!isAuth) {
-  return  <Stack.Navigator>
-         <AuthStack.Screen
-           name="registration"
-           component={RegistrationScreen}
-           options={{ headerShown: false }}
-         />
-         <AuthStack.Screen name="login" component={LoginScreen} options={{ headerShown: false }}/>
-       </Stack.Navigator> 
-  }
-  return  <MainTab.Navigator>
-        <MainTab.Screen name="posts" component={PostsScreen} options={{headerShown: false}}/>
-        <MainTab.Screen name="create" component={CreatePostsScreen} options={{headerShown: false}}/>
-        <MainTab.Screen name="profile" component={ProfileScreen} options={{headerShown: false}}/>
-        </MainTab.Navigator>
-}
 
 const App = () => {
   const [fontsLoaded] = useFonts({
