@@ -11,37 +11,43 @@ import { CreatePostsScreen } from "./Screens/main/CreatePostsScreen";
 import { ProfileScreen } from "./Screens/main/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
+ const AuthStack = createNativeStackNavigator();
+  const MainTab = createBottomTabNavigator();
 
+const useRoute = (isAuth) => {
+  if (!isAuth) {
+  return  <Stack.Navigator>
+         <AuthStack.Screen
+           name="registration"
+           component={RegistrationScreen}
+           options={{ headerShown: false }}
+         />
+         <AuthStack.Screen name="login" component={LoginScreen} options={{ headerShown: false }}/>
+       </Stack.Navigator> 
+  }
+  return  <MainTab.Navigator>
+        <MainTab.Screen name="posts" component={PostsScreen} options={{headerShown: false}}/>
+        <MainTab.Screen name="create" component={CreatePostsScreen} options={{headerShown: false}}/>
+        <MainTab.Screen name="profile" component={ProfileScreen} options={{headerShown: false}}/>
+        </MainTab.Navigator>
+}
 
 const App = () => {
   const [fontsLoaded] = useFonts({
     roboto: require("./assets/fonts/Roboto/Roboto-Medium.ttf"),
   });
   if (!fontsLoaded) return null;
-
-  const AuthStack = createNativeStackNavigator();
-  const MainTab = createBottomTabNavigator();
-
+const routing = useRoute(false)
+ 
   return (
     <NavigationContainer>
-      <MainTab.Navigator>
-        <MainTab.Screen name="posts" component={PostsScreen} options={{headerShown: false}}/>
-        <MainTab.Screen name="create" component={CreatePostsScreen} options={{headerShown: false}}/>
-        <MainTab.Screen name="profile" component={ProfileScreen} options={{headerShown: false}}/>
-        </MainTab.Navigator>
+      {routing}
     </NavigationContainer>
   );
 };
 
-// authNav
-{/* <Stack.Navigator>
-        <AuthStack.Screen
-          name="registration"
-          component={RegistrationScreen}
-          options={{ headerShown: false }}
-        />
-        <AuthStack.Screen name="login" component={LoginScreen} options={{ headerShown: false }}/>
-      </Stack.Navigator> */}
+
+ 
 
 const styles = StyleSheet.create({
   container: {
