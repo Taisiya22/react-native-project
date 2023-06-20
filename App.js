@@ -11,7 +11,7 @@ const App = () => {
     roboto: require("./assets/fonts/Roboto/Roboto-Medium.ttf"),
   });
   if (!fontsLoaded) return null;
-const routing = useRoute(false)
+const routing = useRoute(true)
  
   return (
     <NavigationContainer>
