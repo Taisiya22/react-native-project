@@ -3,13 +3,20 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { IconButton } from "@react-native-material/core";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import { PostsScreen } from "../Screens/main/PostsScreen";
 import { CreatePostsScreen } from "../Screens/main/CreatePostsScreen";
 import { ProfileScreen } from "../Screens/main/ProfileScreen";
 
 const MainTab = createBottomTabNavigator();
-
+function create() {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Profile!</Text>
+    </View>
+  );
+}
 export const Home = () => {
   return (
     <MainTab.Navigator>
@@ -66,7 +73,23 @@ export const Home = () => {
       <MainTab.Screen
         name="create"
         component={CreatePostsScreen}
-        options={{
+        options={({ navigation }) => ({
+          headerLeft: () => (
+            <IconButton
+              style={{ paddingLeft: 16 }}
+              onPress={() => {
+                navigation.goBack();
+              }}
+              icon={(props) => (
+                <Ionicons
+                  name="arrow-back"
+                  {...props}
+                  color="#BDBDBD"
+                  size={24}
+                />
+              )}
+            />
+          ),
           title: "Створити публікацію",
           headerTintColor: "#212121",
           headerTitleStyle: {
@@ -76,7 +99,6 @@ export const Home = () => {
             lineHeight: 22,
             letterSpacing: -0.408,
           },
-
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {
             return (
@@ -98,7 +120,7 @@ export const Home = () => {
               </View>
             );
           },
-        }}
+        })}
       />
       <MainTab.Screen
         name="profile"
