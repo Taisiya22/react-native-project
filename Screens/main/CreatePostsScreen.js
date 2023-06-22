@@ -8,7 +8,7 @@ export const
     CreatePostsScreen = () => { 
         return (<View style={styles.container}>
             <Camera style={styles.camera}>
-  <IconButton style={styles.iconBorder}
+                <IconButton style={styles.iconBorder} onPress={() => { }}
               icon={(props) => (
                         <MaterialIcons
                             
@@ -27,7 +27,6 @@ styles = StyleSheet.create({
     container: {
         flex: 1,
       
-     
     },
     camera: {
         height: 240,
