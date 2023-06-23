@@ -10,13 +10,8 @@ import { CreatePostsScreen } from "../Screens/main/CreatePostsScreen";
 import { ProfileScreen } from "../Screens/main/ProfileScreen";
 
 const MainTab = createBottomTabNavigator();
-function create() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Profile!</Text>
-    </View>
-  );
-}
+
+ 
 export const Home = () => {
   return (
     <MainTab.Navigator>

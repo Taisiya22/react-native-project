@@ -1,5 +1,5 @@
 import React, { useState} from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity} from "react-native";
 import { Camera } from "expo-camera";
 import { IconButton } from "@react-native-material/core";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -7,16 +7,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 export const
-    CreatePostsScreen = () => { 
+    CreatePostsScreen = ({navigation }) => { 
         const [camera, setCamera] = useState(null);
         const [photo, setPhoto] = useState(null);
 
         const takePhoto = async () => { 
             const photo = await camera.takePictureAsync();
             setPhoto(photo.uri);
-            console.log(photo);
+            // console.log(photo);
         }
-
+        const send = () => { 
+            navigation.navigate('posts', {photo})
+        }
         return (<View style={styles.container}>
             <Camera style={styles.camera} ref={setCamera}> 
                 {photo && <View style={styles.photoContainer}>
@@ -33,7 +35,11 @@ export const
                 />
               )}
             />
-                </Camera>
+            </Camera>
+            <TouchableOpacity style={{marginTop:20 }} onPress={send}>
+                <Text style={{borderWidth: 1,
+        borderColor:"black", marginHorizontal:16, textAlign: "center", padding:15}} >Public</Text>
+            </TouchableOpacity>
     </View>)
     }
 
@@ -43,9 +49,9 @@ styles = StyleSheet.create({
       
     },
     camera: {
-        // height: 600,
+        height: "70%",
       
-        flex: 1,
+        // flex: 1,
         alignItems: "center",
         justifyContent: "center",
         marginHorizontal: 16,
