@@ -17,6 +17,7 @@ import { Camera, CameraType } from "expo-camera";
 import { IconButton} from "@react-native-material/core";
 import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
+import * as Location from "expo-location";
 
 import { useHeaderHeight } from '@react-navigation/elements';
 
@@ -27,8 +28,24 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
- const height = useHeaderHeight();
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [location, setLocation] = useState(null);
 
+  const height = useHeaderHeight();
+  
+
+useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg ('Permission to access location was denied');
+                return;
+            }
+        })();
+    }, []);
+
+  
+  
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -47,9 +64,18 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
+   let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
     setPhoto(photo.uri);
     await MediaLibrary.createAssetAsync(photo.uri);
+
+
     // console.log(photo);
+    // console.log(coords)
   };
 
   const send = () => {
@@ -127,7 +153,9 @@ export const CreatePostsScreen = ({ navigation }) => {
        }
      
     <TouchableOpacity onPress={pickImage}>
-        <Text style={{ marginLeft: 16, marginTop: 8, color: "#BDBDBD", fontFamily: "roboto", fontSize: 16 }}> Завантажте фото</Text>
+            <Text style={{ marginLeft: 16, marginTop: 8, color: "#BDBDBD", fontFamily: "roboto", fontSize: 16 }}>
+              {photo === null? "Завантажте фото" : "Редагувати фото"} 
+            </Text>
         </TouchableOpacity>
  
         <View style={styles.inputWrapper}>
@@ -142,9 +170,10 @@ export const CreatePostsScreen = ({ navigation }) => {
             </View>
         </View>
         
-        <TouchableOpacity style={{ marginTop: 20 }} onPress={send}>
-        <Text
-          style={
+          <TouchableOpacity style={{ marginTop: 20 }} onPress={send}>
+            
+            <Text
+              style={
             styles.btnSend
           }
         >
