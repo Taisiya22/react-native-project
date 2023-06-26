@@ -6,22 +6,28 @@ import {
   Image,
   TouchableOpacity,
   Button,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { Camera, CameraType } from "expo-camera";
 import { IconButton} from "@react-native-material/core";
 import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
+import * as ImagePicker from 'expo-image-picker';
+
+import { useHeaderHeight } from '@react-navigation/elements';
 
 
 export const CreatePostsScreen = ({ navigation }) => {
-  // const [camera, setCamera] = useState(null);
+
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
-  // const [type, setType] = useState(CameraType.back);
-  // const [permission, requestPermission] = Camera.useCameraPermissions();
+ const height = useHeaderHeight();
 
   useEffect(() => {
     (async () => {
@@ -50,9 +56,24 @@ export const CreatePostsScreen = ({ navigation }) => {
     navigation.navigate("posts", { photo });
   };
 
+  const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.5,
+        });
+        if (!result.canceled) {
+            setPhoto(result.assets[0].uri);
+        };
+  };
+  
   return (
-    <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={setCamera}>
+    <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1 }}
+>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}> 
+          {photo === null ? <Camera style={styles.camera} type={type} ref={setCamera}>
         {photo && (
           <View style={styles.photoContainer}>
             <Image source={{ uri: photo }} style={{ flex: 1 }} />
@@ -79,22 +100,49 @@ export const CreatePostsScreen = ({ navigation }) => {
             );
           }}
         >
-          <Text style={{ fontSize: 18, marginTop: 10, color: "white" }}>
+          <Text style={{ fontSize: 18, marginTop: 10, color: "#BDBDBD" }}>
             {" "}
             Flip{" "}
           </Text>
         </TouchableOpacity>
-      </Camera>
-     
-      <Text style={{marginLeft:16, marginTop:8, color:"#BDBDBD", fontFamily:"roboto", fontSize:16}}> Завантажте фото</Text>
-      <TouchableOpacity style={{ marginTop: 20 }} onPress={send}>
-        <View style={styles.inputWrapper }>
-          <TextInput placeholder="Назва..." style={styles.input} />
-          <View>
-            <TextInput placeholder=" Місцевість..." style={{...styles.input, paddingLeft: 28} } />
-            <EvilIcons name="location" size={24} color="#BDBDBD" style={styles.iconLocation } />
-            </View>
+          </Camera> :
+            <View style={{...styles.camera } }>
+              <Image source={{ uri: photo }} 
+                style={{ ...styles.camera, position: "absolute", width: "100%", height: "100%" }}
+              />
+              <IconButton
+          style={styles.iconBorder}
+          onPress={() => setPhoto(null)}
+          icon={(props) => (
+            <MaterialIcons
+              name="camera-alt"
+              {...props}
+              color="#BDBDBD"
+             size={24}
+            />
+          )}
+        />
           </View>
+            
+       }
+     
+    <TouchableOpacity onPress={pickImage}>
+        <Text style={{ marginLeft: 16, marginTop: 8, color: "#BDBDBD", fontFamily: "roboto", fontSize: 16 }}> Завантажте фото</Text>
+        </TouchableOpacity>
+ 
+        <View style={styles.inputWrapper}>
+          
+            <TextInput placeholder="Назва..." style={styles.input} />
+        
+          <View>
+           
+            <TextInput placeholder=" Місцевість..." style={{...styles.input, paddingLeft: 28} } />
+          <EvilIcons name="location" size={24} color="#BDBDBD" style={styles.iconLocation} />
+       
+            </View>
+        </View>
+        
+        <TouchableOpacity style={{ marginTop: 20 }} onPress={send}>
         <Text
           style={
             styles.btnSend
@@ -103,14 +151,19 @@ export const CreatePostsScreen = ({ navigation }) => {
           Опублікувати
         </Text>
       </TouchableOpacity>
-    </View>
+      </View>
+      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+       
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  backgroundColor: "#FFF"},
+    backgroundColor: "#FFF",
+  
+    },
   camera: {
     height: 240,
     marginHorizontal: 16,
@@ -120,8 +173,17 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   photoContainer: {
-    position: "absolute",
+    // position: "absolute",
+    // backgroundColor: "#F6F6F6",
     height: 240,
+    // width: "100%",
+    borderColor: "#E8E8E8",
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 16,
+  
   },
   iconBorder: {
     borderRadius: 50,

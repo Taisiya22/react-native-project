@@ -23,6 +23,7 @@ const intialRegistration = {
 };
 
 const width = Dimensions.get("window").width;
+
 export const RegistrationScreen = ({navigation }) => {
   const [image, setImage] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -87,7 +88,8 @@ export const RegistrationScreen = ({navigation }) => {
         </View>
         <Text style={styles.text}>Реєстрація</Text>
         <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+              
         >
           <View style={{ ...styles.inputWrapper }}>
             <View>
