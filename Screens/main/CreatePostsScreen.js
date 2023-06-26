@@ -6,11 +6,13 @@ import {
   Image,
   TouchableOpacity,
   Button,
+  TextInput
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import { Camera, CameraType } from "expo-camera";
-import { IconButton } from "@react-native-material/core";
-import { MaterialIcons } from "@expo/vector-icons";
+import { IconButton} from "@react-native-material/core";
+import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
+
 
 export const CreatePostsScreen = ({ navigation }) => {
   // const [camera, setCamera] = useState(null);
@@ -83,17 +85,22 @@ export const CreatePostsScreen = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
       </Camera>
+     
+      <Text style={{marginLeft:16, marginTop:8, color:"#BDBDBD", fontFamily:"roboto", fontSize:16}}> Завантажте фото</Text>
       <TouchableOpacity style={{ marginTop: 20 }} onPress={send}>
+        <View style={styles.inputWrapper }>
+          <TextInput placeholder="Назва..." style={styles.input} />
+          <View>
+            <TextInput placeholder=" Місцевість..." style={{...styles.input, paddingLeft: 28} } />
+            <EvilIcons name="location" size={24} color="#BDBDBD" style={styles.iconLocation } />
+            </View>
+          </View>
         <Text
-          style={{
-            borderWidth: 1,
-            borderColor: "black",
-            marginHorizontal: 16,
-            textAlign: "center",
-            padding: 15,
-          }}
+          style={
+            styles.btnSend
+          }
         >
-          Public
+          Опублікувати
         </Text>
       </TouchableOpacity>
     </View>
@@ -101,7 +108,9 @@ export const CreatePostsScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+  backgroundColor: "#FFF"},
   camera: {
     height: 240,
     marginHorizontal: 16,
@@ -120,4 +129,31 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "#FFF",
   },
+  inputWrapper: {
+gap: 20
+  },
+  input: {
+    marginHorizontal: 16,
+    height: 50,
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderColor: "#E8E8E8"
+  },
+  iconLocation: { position: "absolute",
+        top: 13,
+        zIndex:1,
+    width: 24,
+    height: 24,
+    marginLeft: 16
+  },
+  btnSend: {
+    marginHorizontal: 16,
+    marginTop: 32,
+    borderRadius: 100,
+    backgroundColor: "#F6F6F6",
+    textAlign: "center",
+    padding: 15,
+    color: "#BDBDBD"
+  }
 });
