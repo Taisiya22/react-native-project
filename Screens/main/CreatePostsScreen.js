@@ -64,22 +64,23 @@ useEffect(() => {
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
-   let location = await Location.getCurrentPositionAsync({});
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setLocation(coords);
     setPhoto(photo.uri);
     await MediaLibrary.createAssetAsync(photo.uri);
 
 
     // console.log(photo);
-    // console.log(coords)
+   
   };
 
-  const send = () => {
-    navigation.navigate("posts", { photo });
+  const send = async() => {
+    navigation.navigate("DefaultScreen", { photo });
+    let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
+    // console.log(coords)
   };
 
   const pickImage = async () => {

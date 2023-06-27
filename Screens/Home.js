@@ -41,7 +41,6 @@ export const Home = () => {
               )}
             />
           ),
-
           tabBarShowLabel: false,
           tabBarIcon: ({ focused, color, size }) => {
             return (
