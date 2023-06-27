@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, Image, Button } from "react-native";
+import {
+  View,
+  FlatList,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { EvilIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 export const DefaultScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -18,20 +26,40 @@ export const DefaultScreen = ({ route, navigation }) => {
         renderItem={({ item }) => (
           <View
             style={{
-              alignItems: "center",
-              justifyContent: "center",
+              marginHorizontal: 16,
+              marginTop: 32,
+              //   alignItems: "center",
+              //   justifyContent: "center",
               marginBottom: 15,
             }}
           >
             <Image
               source={{ uri: item.photo }}
-              style={{ height: 200, width: 350 }}
+              style={{
+                width: Dimensions.get("window").width - 32,
+                height: (Dimensions.get("window").width * 60) / 100,
+                borderRadius: 8,
+              }}
             />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 8,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Коментарі")}
+              >
+                <EvilIcons name="comment" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Мапи")}>
+                <Feather name="map-pin" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            </View>
           </View>
-              )}
-          />
-          <Button title="go to map" onPress={() => navigation.navigate('MapScreen')} />
-           <Button title="go to comments" onPress={() => navigation.navigate('CommentsScreen')} />
+        )}
+      />
     </View>
   );
 };
