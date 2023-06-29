@@ -13,6 +13,8 @@ import {
   ImageBackground
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+import { authSingInUser } from '../../redux/auth/authOperations';
 
 const intialRegistration = {
   email: "",
@@ -27,6 +29,8 @@ export const LoginScreen = ({navigation}) => {
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
 
+  const dispatch = useDispatch();
+
  const closeKeyboard = () => {setIsShowKeyboard(false);
     Keyboard.dismiss();
   }
@@ -38,7 +42,8 @@ export const LoginScreen = ({navigation}) => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    console.log(registration);
+    dispatch(authSingInUser(registration))
+    // console.log(registration);
     setRegistration(intialRegistration);
     
   };
@@ -111,7 +116,7 @@ export const LoginScreen = ({navigation}) => {
           activeOpacity={0.8}
           onPress={handleSubmit}
         >
-          <Text style={styles.submitTitle}>Зареєструватися</Text>
+          <Text style={styles.submitTitle}>Увійти</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ marginTop: 16 }} onPress={() => { navigation.navigate('registration') }} activeOpacity={0.8}>
               <Text style={styles.logo}>Немає акаунту?

@@ -1,11 +1,11 @@
 import { db } from '../../firebase/config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 
 export const authSingUpUser = ({ email, password, login}) => async (dispatch, getState) => {
     try {
        const user = await createUserWithEmailAndPassword(auth, email, password);
-         console.log(user)
+        //  console.log(user)
   
     } catch (error) {
         console.log(error);
@@ -14,11 +14,13 @@ export const authSingUpUser = ({ email, password, login}) => async (dispatch, ge
  };
 
 
-export const authSingInUser = () => async (dispatch, getState) => { 
+export const authSingInUser = ({ email, password}) => async (dispatch, getState) => { 
     try {
-        
+        const user = await signInWithEmailAndPassword(auth, email, password);
+              console.log(user)
     } catch (error) {
-        
+        console.log(error);
+        console.log(error.message)
     }
 };
 
