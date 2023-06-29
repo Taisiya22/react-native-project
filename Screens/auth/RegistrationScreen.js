@@ -14,6 +14,10 @@ import {
   Button
 } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
+import { useDispatch } from "react-redux";
+import { authSingUpUser } from '../../redux/auth/authOperations';
+
+
 
 
 const intialRegistration = {
@@ -30,6 +34,9 @@ export const RegistrationScreen = ({navigation }) => {
   const [registration, setRegistration] = useState(intialRegistration);
   const [activeInput, setActiveInput] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+
+  const dispatch = useDispatch();
+
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -56,7 +63,8 @@ export const RegistrationScreen = ({navigation }) => {
   const handleSubmit = () => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
-    console.log(registration )
+    // console.log(registration);
+    dispatch(authSingUpUser(registration))
     setRegistration(intialRegistration);
   };
   const closeKeyboard = () => {setIsShowKeyboard(false);
