@@ -2,8 +2,10 @@ import React from 'react';
 import { StyleSheet} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import { Provider } from "react-redux";
 
-import {useRoute} from "./helpers/useRoute.js"
+import { useRoute } from "./helpers/useRoute.js";
+import { store } from './redux/store.js';
 
 
 const App = () => {
@@ -14,9 +16,11 @@ const App = () => {
 const routing = useRoute(true)
  
   return (
+    <Provider store={store}>
     <NavigationContainer>
       {routing}
-    </NavigationContainer>
+      </NavigationContainer>
+      </Provider>
   );
 };
 

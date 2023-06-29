@@ -25,6 +25,8 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
+  const [photoTitle, setPhotoTitle] = useState("");
+ 
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
 
