@@ -141,11 +141,15 @@ const styles = StyleSheet.create({
   },
   
   inputWrapper: {
-    paddingRight: 16,
-    paddingLeft: 16,
-    paddingTop: 33,
-    paddingBottom: 43,
+    // paddingRight: 16,
+    // paddingLeft: 16,
+    // paddingTop: 33,
+    // paddingBottom: 43,
+    // gap: 16,
+    marginHorizontal: 30,
     gap: 16,
+    paddingTop: 32,
+    paddingBottom: 43,
   },
   input: {
     width: 343,

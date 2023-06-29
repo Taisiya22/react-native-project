@@ -13,7 +13,7 @@ const App = () => {
     roboto: require("./assets/fonts/Roboto/Roboto-Medium.ttf"),
   });
   if (!fontsLoaded) return null;
-const routing = useRoute(true)
+const routing = useRoute(false)
  
   return (
     <Provider store={store}>
