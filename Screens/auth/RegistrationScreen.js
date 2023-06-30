@@ -111,7 +111,7 @@ export const RegistrationScreen = ({navigation }) => {
                 onChangeText={(value) =>
                   setRegistration((prevState) => ({
                     ...prevState,
-                    login: value,
+                      login: value,
                   }))
                 }
                 onFocus={() => setActiveInput("login")}
