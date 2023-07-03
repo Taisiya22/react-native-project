@@ -17,8 +17,10 @@ import { IconButton } from "@react-native-material/core";
 import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { useHeaderHeight } from "@react-navigation/elements";
+import { db, storage } from '../../firebase/config';
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -31,6 +33,16 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
 
   const height = useHeaderHeight();
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    const storageImage = await ref(storage, `postImage/${uniquePostId}`);
+    await uploadBytes(storageImage, file);
+    const addedPhoto = await getDownloadURL(storageImage);
+    return addedPhoto;
+  };
 
   useEffect(() => {
     (async () => {
@@ -67,6 +79,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
 
   const send = async () => {
+    uploadPhotoToServer();
     navigation.navigate("DefaultScreen", { photo });
     let location = await Location.getCurrentPositionAsync({});
     const coords = {
