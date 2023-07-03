@@ -4,6 +4,8 @@ import { Feather } from "@expo/vector-icons";
 import { IconButton } from "@react-native-material/core";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { authSingOutUser } from "../redux/auth/authOperations";
 
 import { PostsScreen } from "../Screens/main/PostsScreen";
 import { CreatePostsScreen } from "../Screens/main/CreatePostsScreen";
@@ -13,6 +15,11 @@ const MainTab = createBottomTabNavigator();
 
  
 export const Home = () => {
+  const dispatch = useDispatch();
+
+  const handleSingOut = () => { 
+    dispatch(authSingOutUser());
+  }
   return (
     <MainTab.Navigator>
       <MainTab.Screen
@@ -30,6 +37,7 @@ export const Home = () => {
           },
           headerRight: () => (
             <IconButton
+              onPress={ handleSingOut}
               style={{ paddingRight: 16 }}
               icon={(props) => (
                 <MaterialIcons
