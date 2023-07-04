@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -18,6 +19,7 @@ import { MaterialIcons, EvilIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 import { useHeaderHeight } from "@react-navigation/elements";
 import { db, storage } from '../../firebase/config';
@@ -28,22 +30,32 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
   const [photoTitle, setPhotoTitle] = useState("");
+  const [photoLocation, setPhotoLocation] = useState("");
  
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
 
+  const { userId, nickName } = useSelector((state) => state.auth);
+
   const height = useHeaderHeight();
 
-  const uploadPhotoToServer = async () => {
-    const response = await fetch(photo);
-    const file = await response.blob();
-    const uniquePostId = Date.now().toString();
-    const storageImage = await ref(storage, `postImage/${uniquePostId}`);
-    await uploadBytes(storageImage, file);
-    const addedPhoto = await getDownloadURL(storageImage);
-    return addedPhoto;
-  };
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      }
 
+      let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
+    })();
+  }, []);
+
+  
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -70,16 +82,45 @@ export const CreatePostsScreen = ({ navigation }) => {
     return <Text>No access to camera</Text>;
   }
 
+const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const uniquePostId = Date.now().toString();
+    const storageImage = await ref(storage, `postImage/${uniquePostId}`);
+    await uploadBytes(storageImage, file);
+    const addedPhoto = await getDownloadURL(storageImage);
+    // console.log(addedPhoto)
+    return addedPhoto;
+  };
+   
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    const createPost = {
+      photo, photoTitle, photoLocation, location, userId, nickName
+    };
+    uploadPostToDatabase(createPost);
+    
+  };
+
+  const uploadPostToDatabase = async (post) => {
+   
+       await addDoc(collection(db, "post"), post);
+     
+  };
+
+
   const takePhoto = async () => {
+    // console.log(photoTitle);
+    
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
     await MediaLibrary.createAssetAsync(photo.uri);
-
-    // console.log(photo);
+     
   };
 
   const send = async () => {
-    uploadPhotoToServer();
+    // uploadPhotoToServer();
+    uploadPostToServer();
     navigation.navigate("DefaultScreen", { photo });
     let location = await Location.getCurrentPositionAsync({});
     const coords = {
@@ -87,7 +128,10 @@ export const CreatePostsScreen = ({ navigation }) => {
       longitude: location.coords.longitude,
     };
     setLocation(coords);
-    // console.log(coords)
+    console.log(coords)
+
+    // console.log(photo);
+   
   };
 
   const pickImage = async () => {
@@ -187,12 +231,13 @@ export const CreatePostsScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <View style={styles.inputWrapper}>
-            <TextInput placeholder="Назва..." style={styles.input} />
+            <TextInput placeholder="Назва..." style={styles.input} onChangeText={setPhotoTitle}/>
 
             <View>
               <TextInput
                 placeholder=" Місцевість..."
                 style={{ ...styles.input, paddingLeft: 28 }}
+                onChangeText={setPhotoLocation}
               />
               <EvilIcons
                 name="location"
