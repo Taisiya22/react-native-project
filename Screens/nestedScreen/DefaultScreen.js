@@ -62,7 +62,7 @@ export const DefaultScreen = ({ route, navigation }) => {
               >
                 <EvilIcons name="comment" size={24} color="#BDBDBD" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Мапи")}>
+              <TouchableOpacity onPress={() => navigation.navigate("Мапи", {location: item.location})}>
                 <Feather name="map-pin" size={24} color="#BDBDBD" />
               </TouchableOpacity>
             </View>
