@@ -56,15 +56,15 @@ export const CreatePostsScreen = ({ navigation }) => {
   }, []);
 
   
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== "granted") {
+  //       setErrorMsg("Permission to access location was denied");
+  //       return;
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -103,9 +103,7 @@ const uploadPhotoToServer = async () => {
   };
 
   const uploadPostToDatabase = async (post) => {
-   
        await addDoc(collection(db, "post"), post);
-     
   };
 
 
@@ -121,7 +119,7 @@ const uploadPhotoToServer = async () => {
   const send = async () => {
     // uploadPhotoToServer();
     uploadPostToServer();
-    navigation.navigate("DefaultScreen", { photo });
+    navigation.navigate("DefaultScreen");
     let location = await Location.getCurrentPositionAsync({});
     const coords = {
       latitude: location.coords.latitude,
