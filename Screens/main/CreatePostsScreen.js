@@ -34,10 +34,11 @@ export const CreatePostsScreen = ({ navigation }) => {
  
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
+  
 
   const { userId, nickName } = useSelector((state) => state.auth);
 
-  const height = useHeaderHeight();
+ 
 
   useEffect(() => {
     (async () => {
@@ -56,16 +57,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   }, []);
 
   
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       setErrorMsg("Permission to access location was denied");
-  //       return;
-  //     }
-  //   })();
-  // }, []);
-
+ 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -75,12 +67,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  
 
 const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
@@ -99,13 +86,23 @@ const uploadPhotoToServer = async () => {
       photo, photoTitle, photoLocation, location, userId, nickName
     };
     uploadPostToDatabase(createPost);
+     navigation.navigate("posts", {
+       photo, photoTitle, photoLocation, location
+    });
+    resetForm();
     
   };
 
   const uploadPostToDatabase = async (post) => {
-       await addDoc(collection(db, "post"), post);
+      //  await addDoc(collection(db, "post"), post);
+    const docRef = await addDoc(collection(db, "post"), post);
   };
 
+  const resetForm = () => {
+    setPhoto(null);
+    setPhotoLocation("");
+    setPhotoTitle("")
+   }
 
   const takePhoto = async () => {
     // console.log(photoTitle);
@@ -126,12 +123,13 @@ const uploadPhotoToServer = async () => {
       longitude: location.coords.longitude,
     };
     setLocation(coords);
-    console.log(coords)
+    
 
     // console.log(photo);
    
   };
 
+ 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -269,10 +267,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   photoContainer: {
-    // position: "absolute",
-    // backgroundColor: "#F6F6F6",
     height: 240,
-    // width: "100%",
     borderColor: "#E8E8E8",
     borderRadius: 8,
     borderWidth: 1,

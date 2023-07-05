@@ -64,7 +64,7 @@ export const DefaultScreen = ({ route, navigation }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => navigation.navigate("Коментарі", { id: item.id})}
+                onPress={() => navigation.navigate("Коментарі", { id: item.id,  photo: item.photo})}
               >
                 <EvilIcons name="comment" size={24} color="#BDBDBD" />
               </TouchableOpacity>

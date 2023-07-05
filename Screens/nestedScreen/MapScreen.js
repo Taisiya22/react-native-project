@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 export const MapScreen = ({ route }) => {
 
   const [location, setLocation] = useState(route.params.location);
+  
   // console.log( route.params);
   useEffect(() => {
     async () => {

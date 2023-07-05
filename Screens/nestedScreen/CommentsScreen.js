@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from "react-native";
+import React, { useState, useEffect} from "react";
+import {
+    View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList,
+    Image
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+
 
 import { db } from "../../firebase/config";
 import { useSelector } from "react-redux";
@@ -10,8 +14,10 @@ import { format } from "date-fns";
 export const CommentsScreen = ({route }) => { 
         const [comments, setComments] = useState([]);
         const titleTextHandler = (text) => setText(text);
-         const [text, setText] = useState("");
-        const { id, photo } = route.params;
+        const [text, setText] = useState("");
+    
+    const { id, photo } = route.params;
+// console.log(route.params)
         const { nickName, userId  } = useSelector((state) => state.auth);
 
        useEffect(() => {
@@ -35,7 +41,7 @@ export const CommentsScreen = ({route }) => {
       data,
       nickName,
       userId,
-    //   photo
+   
     };
 
     const docRef = await addDoc(
@@ -48,20 +54,26 @@ export const CommentsScreen = ({route }) => {
         
 
     return (<View style={styles.container}>
-           <FlatList
+        <View style={{marginHorizontal:16, marginTop: 32} }>
+            <Image source={{ uri: photo }} style={styles.photo} />
+            </View>
+     
+        <FlatList 
         data={comments}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.commentWrapper}>
+            renderItem={({ item }) => (
+           <View style={styles.commentWrapper}>
             <Text style={styles.comment}>{item.text}</Text>
             <Text style={styles.data}>{item.data}</Text>
           </View>
         )}
       />
            <View>
-           <TextInput value={text}
-              style={styles.input}
-              onChangeText={titleTextHandler}/>
+            <TextInput
+                value={text}
+                style={styles.input}
+                onChangeText={titleTextHandler} />
+           
            </View>
            <View style={styles.inputContainer}>
            <TouchableOpacity style={styles.iconContainer} onPress={onAddComment}>
@@ -69,13 +81,13 @@ export const CommentsScreen = ({route }) => {
                </TouchableOpacity>
             </View>
         </View>)
+    
+    
     }
 
 styles = StyleSheet.create({
     container: {
-        flex: 1,
-        
-        
+        flex: 1, 
     },
  input: {
     backgroundColor: "#F6F6F6",
@@ -127,5 +139,16 @@ styles = StyleSheet.create({
     fontSize: 10,
     color: "#BDBDBD",
     textAlign: "right",
-  },
+    },
+    photo: {
+       
+    width: "100%",
+    height: 240,
+    marginBottom: 8,
+    borderRadius: 8,
+    },
+    
 })
+
+
+
