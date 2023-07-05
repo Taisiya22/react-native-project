@@ -4,9 +4,8 @@ import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 
 export const MapScreen = ({ route }) => {
-
   const [location, setLocation] = useState(route.params.location);
-  
+
   // console.log( route.params);
   useEffect(() => {
     async () => {
@@ -28,14 +27,16 @@ export const MapScreen = ({ route }) => {
         showsUserLocation={true}
       >
         {location && (
-          <Marker title="I am here" coordinate={location} description="Photo location" />
+          <Marker
+            title="I am here"
+            coordinate={location}
+            description="Photo location"
+          />
         )}
       </MapView>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   container: {

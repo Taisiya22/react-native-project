@@ -10,15 +10,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Dimensions,
-  ImageBackground, 
-  Button
+  ImageBackground,
 } from "react-native";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
-import { authSingUpUser } from '../../redux/auth/authOperations';
-
-
-
+import { authSingUpUser } from "../../redux/auth/authOperations";
 
 const intialRegistration = {
   login: "",
@@ -28,7 +24,7 @@ const intialRegistration = {
 
 const width = Dimensions.get("window").width;
 
-export const RegistrationScreen = ({navigation }) => {
+export const RegistrationScreen = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [registration, setRegistration] = useState(intialRegistration);
@@ -36,7 +32,6 @@ export const RegistrationScreen = ({navigation }) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const dispatch = useDispatch();
-
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,10 +45,9 @@ export const RegistrationScreen = ({navigation }) => {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
+    } else {
+      setImage(null);
     }
-    else {
-      setImage(null)
-     }
   };
 
   useEffect(() => {
@@ -64,121 +58,139 @@ export const RegistrationScreen = ({navigation }) => {
     Keyboard.dismiss();
     setIsShowKeyboard(false);
     // console.log(registration);
-    dispatch(authSingUpUser(registration))
+    dispatch(authSingUpUser(registration));
     setRegistration(intialRegistration);
   };
-  const closeKeyboard = () => {setIsShowKeyboard(false);
-        Keyboard.dismiss(); }
+  const closeKeyboard = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
   return (
-     <TouchableWithoutFeedback
-      onPress={closeKeyboard}
-    >
- <ImageBackground source={require('../../assets/images/photo-bg.jpg')} style={styles.image}>
-    <TouchableWithoutFeedback
-      onPress={closeKeyboard}
-    >
-      <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.8 : 0.7 }}>
-        
-        <View style={{ ...styles.avatarWrapper, left: (width - 120) / 2 }}>
-          
-           <TouchableOpacity onPress={pickImage}>
-              {image && <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 16 }} />}
-            {!image && <Image
-              fadeDuration={0}
-              style={styles.add}
-              source={require("../../assets/images/add.png")}
-            />}
-              
-              { image && <Image
-                            fadeDuration={0}
-                            style={styles.remove} source={require('../../assets/images/remove.png')} />}
+    <TouchableWithoutFeedback onPress={closeKeyboard}>
+      <ImageBackground
+        source={require("../../assets/images/photo-bg.jpg")}
+        style={styles.image}
+      >
+        <TouchableWithoutFeedback onPress={closeKeyboard}>
+          <View style={{ ...styles.wrapper, flex: isShowKeyboard ? 0.8 : 0.7 }}>
+            <View style={{ ...styles.avatarWrapper, left: (width - 120) / 2 }}>
+              <TouchableOpacity onPress={pickImage}>
+                {image && (
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 120, height: 120, borderRadius: 16 }}
+                  />
+                )}
+                {!image && (
+                  <Image
+                    fadeDuration={0}
+                    style={styles.add}
+                    source={require("../../assets/images/add.png")}
+                  />
+                )}
+
+                {image && (
+                  <Image
+                    fadeDuration={0}
+                    style={styles.remove}
+                    source={require("../../assets/images/remove.png")}
+                  />
+                )}
               </TouchableOpacity>
-        </View>
-        <Text style={styles.text}>Реєстрація</Text>
-        <KeyboardAvoidingView
+            </View>
+            <Text style={styles.text}>Реєстрація</Text>
+            <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
-              
-        >
-          <View style={{ ...styles.inputWrapper }}>
-            <View>
-              <TextInput
-                style={{
-                  ...styles.input,
-                  borderColor: activeInput === "login" ? "#FF6C00" : "#f6f6f6",
-                }}
-                value={registration.login}
-                placeholder="Логін"
-                onChangeText={(value) =>
-                  setRegistration((prevState) => ({
-                    ...prevState,
-                      login: value,
-                  }))
-                }
-                onFocus={() => setActiveInput("login")}
-                placeholderTextColor="#BDBDBD"
-              />
-            </View>
-            <View>
-              <TextInput
-                style={{
-                  ...styles.input,
-                  borderColor: activeInput === "email" ? "#FF6C00" : "#f6f6f6",
-                }}
-                value={registration.email}
-                placeholder="Адреса електронної пошти"
-                onChangeText={(value) =>
-                  setRegistration((prevState) => ({
-                    ...prevState,
-                    email: value,
-                  }))
-                }
-                onFocus={() => setActiveInput("email")}
-                placeholderTextColor="#BDBDBD"
-              />
-            </View>
-            <View>
-             
-              <TextInput
-                style={{
-                  ...styles.input,
-                  borderColor:
-                    activeInput === "password" ? "#FF6C00" : "#f6f6f6",
-                }}
-                value={registration.password}
-                placeholder="Пароль"
-                onChangeText={(value) =>
-                  setRegistration((prevState) => ({
-                    ...prevState,
-                    password: value,
-                  }))
-                }
-                onFocus={() => setActiveInput("password")}
-                placeholderTextColor="#BDBDBD"
-                secureTextEntry={showPassword}
-              />
-              <Text
-                style={styles.showPassword}
-                onPress={() => setShowPassword(false)}
-              >
-                Показати
+            >
+              <View style={{ ...styles.inputWrapper }}>
+                <View>
+                  <TextInput
+                    style={{
+                      ...styles.input,
+                      borderColor:
+                        activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+                    }}
+                    value={registration.login}
+                    placeholder="Логін"
+                    onChangeText={(value) =>
+                      setRegistration((prevState) => ({
+                        ...prevState,
+                        login: value,
+                      }))
+                    }
+                    onFocus={() => setActiveInput("login")}
+                    placeholderTextColor="#BDBDBD"
+                  />
+                </View>
+                <View>
+                  <TextInput
+                    style={{
+                      ...styles.input,
+                      borderColor:
+                        activeInput === "email" ? "#FF6C00" : "#f6f6f6",
+                    }}
+                    value={registration.email}
+                    placeholder="Адреса електронної пошти"
+                    onChangeText={(value) =>
+                      setRegistration((prevState) => ({
+                        ...prevState,
+                        email: value,
+                      }))
+                    }
+                    onFocus={() => setActiveInput("email")}
+                    placeholderTextColor="#BDBDBD"
+                  />
+                </View>
+                <View>
+                  <TextInput
+                    style={{
+                      ...styles.input,
+                      borderColor:
+                        activeInput === "password" ? "#FF6C00" : "#f6f6f6",
+                    }}
+                    value={registration.password}
+                    placeholder="Пароль"
+                    onChangeText={(value) =>
+                      setRegistration((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
+                    }
+                    onFocus={() => setActiveInput("password")}
+                    placeholderTextColor="#BDBDBD"
+                    secureTextEntry={showPassword}
+                  />
+                  <Text
+                    style={styles.showPassword}
+                    onPress={() => setShowPassword(false)}
+                  >
+                    Показати
+                  </Text>
+                </View>
+              </View>
+            </KeyboardAvoidingView>
+            <TouchableOpacity
+              style={{ ...styles.submitBtn, width: width - 32 }}
+              activeOpacity={0.8}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.submitTitle}>Зареєструватися</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("login");
+              }}
+              style={{ marginTop: 16 }}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.logo}>
+                Вже є акаунт?<Text>Увійти</Text>
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-        <TouchableOpacity
-          style={{ ...styles.submitBtn, width: width - 32 }}
-          activeOpacity={0.8}
-          onPress={handleSubmit}
-        >
-          <Text style={styles.submitTitle}>Зареєструватися</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => { navigation.navigate('login') }}style={{ marginTop: 16 }} activeOpacity={0.8}>
-              <Text style={styles.logo}>Вже є акаунт?<Text >Увійти</Text></Text>
-            </TouchableOpacity>
-      </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
       </ImageBackground>
-      </TouchableWithoutFeedback>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -188,7 +200,6 @@ const styles = StyleSheet.create({
     position: "relative",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-   
   },
   text: {
     textAlign: "center",
@@ -203,7 +214,6 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
-   
   },
   avatar: {
     width: 120,
@@ -215,7 +225,6 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingTop: 32,
     paddingBottom: 43,
-    
   },
   input: {
     width: 343,
@@ -244,18 +253,15 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 
-  
   add: {
-     position: "absolute",
+    position: "absolute",
     top: 81,
     right: -10,
-    
   },
   remove: {
     position: "absolute",
     top: 81,
     right: -18,
-
   },
   showPassword: {
     fontFamily: "roboto",
@@ -274,15 +280,14 @@ const styles = StyleSheet.create({
     height: 120,
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
-    zIndex:999
+    zIndex: 999,
   },
   image: {
     flex: 1,
-      justifyContent: 'center',
-      resizeMode: 'cover',
-    justifyContent: 'flex-end',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-   
+    justifyContent: "center",
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });

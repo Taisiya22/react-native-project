@@ -6,7 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Text,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -14,12 +14,11 @@ import { db } from "../../firebase/config";
 
 import { collection, query, onSnapshot } from "firebase/firestore";
 
-
 export const DefaultScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
 
   const getAllPost = async () => {
-     const postsRef = query(collection(db, 'post'));
+    const postsRef = query(collection(db, "post"));
     onSnapshot(postsRef, (snapshot) => {
       setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
@@ -29,7 +28,6 @@ export const DefaultScreen = ({ route, navigation }) => {
     getAllPost();
   }, []);
 
- 
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -40,8 +38,6 @@ export const DefaultScreen = ({ route, navigation }) => {
             style={{
               marginHorizontal: 16,
               marginTop: 32,
-              //   alignItems: "center",
-              //   justifyContent: "center",
               marginBottom: 15,
             }}
           >
@@ -54,7 +50,7 @@ export const DefaultScreen = ({ route, navigation }) => {
               }}
             />
             <View>
-              <Text style={styles.title }>{item.photoTitle }</Text>
+              <Text style={styles.title}>{item.photoTitle}</Text>
             </View>
             <View
               style={{
@@ -64,12 +60,22 @@ export const DefaultScreen = ({ route, navigation }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => navigation.navigate("Коментарі", { id: item.id,  photo: item.photo})}
+                onPress={() =>
+                  navigation.navigate("Коментарі", {
+                    id: item.id,
+                    photo: item.photo,
+                  })
+                }
               >
                 <EvilIcons name="comment" size={24} color="#BDBDBD" />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Мапи", {location: item.location})}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Мапи", { location: item.location })
+                }
+              >
                 <Feather name="map-pin" size={24} color="#BDBDBD" />
+                <Text style={{}}>{item.photoLocation}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -79,12 +85,11 @@ export const DefaultScreen = ({ route, navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   title: {
-fontSize: 16,
-  fontWeight: 500,
+    fontSize: 16,
+    fontWeight: 500,
     color: "#212121",
     fontFamily: "roboto",
-  }
-})
+  },
+});

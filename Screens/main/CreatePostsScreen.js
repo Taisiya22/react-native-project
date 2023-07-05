@@ -22,7 +22,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
 import { useHeaderHeight } from "@react-navigation/elements";
-import { db, storage } from '../../firebase/config';
+import { db, storage } from "../../firebase/config";
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -31,14 +31,11 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [photoTitle, setPhotoTitle] = useState("");
   const [photoLocation, setPhotoLocation] = useState("");
- 
+
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
-  
 
   const { userId, nickName } = useSelector((state) => state.auth);
-
- 
 
   useEffect(() => {
     (async () => {
@@ -56,8 +53,6 @@ export const CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
-  
- 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -67,9 +62,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     })();
   }, []);
 
-  
-
-const uploadPhotoToServer = async () => {
+  const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
     const file = await response.blob();
     const uniquePostId = Date.now().toString();
@@ -79,38 +72,44 @@ const uploadPhotoToServer = async () => {
     // console.log(addedPhoto)
     return addedPhoto;
   };
-   
+
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
     const createPost = {
-      photo, photoTitle, photoLocation, location, userId, nickName
+      photo,
+      photoTitle,
+      photoLocation,
+      location,
+      userId,
+      nickName,
     };
     uploadPostToDatabase(createPost);
-     navigation.navigate("posts", {
-       photo, photoTitle, photoLocation, location
+    navigation.navigate("posts", {
+      photo,
+      photoTitle,
+      photoLocation,
+      location,
     });
     resetForm();
-    
   };
 
   const uploadPostToDatabase = async (post) => {
-      //  await addDoc(collection(db, "post"), post);
+    //  await addDoc(collection(db, "post"), post);
     const docRef = await addDoc(collection(db, "post"), post);
   };
 
   const resetForm = () => {
     setPhoto(null);
     setPhotoLocation("");
-    setPhotoTitle("")
-   }
+    setPhotoTitle("");
+  };
 
   const takePhoto = async () => {
     // console.log(photoTitle);
-    
+
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
     await MediaLibrary.createAssetAsync(photo.uri);
-     
   };
 
   const send = async () => {
@@ -123,13 +122,10 @@ const uploadPhotoToServer = async () => {
       longitude: location.coords.longitude,
     };
     setLocation(coords);
-    
 
     // console.log(photo);
-   
   };
 
- 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -227,7 +223,11 @@ const uploadPhotoToServer = async () => {
           </TouchableOpacity>
 
           <View style={styles.inputWrapper}>
-            <TextInput placeholder="Назва..." style={styles.input} onChangeText={setPhotoTitle}/>
+            <TextInput
+              placeholder="Назва..."
+              style={styles.input}
+              onChangeText={setPhotoTitle}
+            />
 
             <View>
               <TextInput
