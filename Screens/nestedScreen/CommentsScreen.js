@@ -19,13 +19,9 @@ export const CommentsScreen = ({route }) => {
   }, []);
 
   const getAllComments = async () => {
-    const commentRef = query(collection(doc(db, "post", id), "comments"));
-    const unsubscribe = onSnapshot(commentRef, (querySnapshot) => {
-      const commentArr = [];
-      querySnapshot.forEach((doc) => {
-        commentArr.push({ ...doc.data(), id: doc.id });
-      });
-      setComments(commentArr );
+      const commentRef = query(collection(doc(db, "post", id), "comments"));
+      onSnapshot(commentRef, (snapshot) => {
+      setComments(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
   };
 
