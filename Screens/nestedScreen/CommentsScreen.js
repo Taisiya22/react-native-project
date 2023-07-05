@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { db } from "../../firebase/config";
@@ -25,7 +25,10 @@ export const CommentsScreen = ({route }) => {
     });
   };
 
-  const onAddComment = async () => {
+    const onAddComment = async () => {
+      if (text.trim() === "") {
+      return;
+    }
     const data = format(new Date(), "dd MMMM yyyy | HH : mm");
     const comment = {
       text,
@@ -44,7 +47,17 @@ export const CommentsScreen = ({route }) => {
 
         
 
-       return (<View style={styles.container}>
+    return (<View style={styles.container}>
+           <FlatList
+        data={comments}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.commentWrapper}>
+            <Text style={styles.comment}>{item.text}</Text>
+            <Text style={styles.data}>{item.data}</Text>
+          </View>
+        )}
+      />
            <View>
            <TextInput value={text}
               style={styles.input}
@@ -91,5 +104,28 @@ styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row-reverse",
   },
-
+    commentWrapper: {
+    padding: 16,
+    marginLeft: 16,
+    marginTop: 32,
+    marginBottom: 24,
+    width: 299,
+    height: 103,
+    flexShrink: 0,
+    borderRadius: 6,
+    backgroundColor: "#F6F6F6",
+    },
+     comment: {
+    color: "#212121",
+    fontSize: 13,
+    fontStyle: "normal",
+    fontWeight: 400,
+    lineHeight: 18,
+    },
+     data: {
+    fontFamily: "roboto",
+    fontSize: 10,
+    color: "#BDBDBD",
+    textAlign: "right",
+  },
 })
