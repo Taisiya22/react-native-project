@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const state = {
     userId: null,
     nickName: null,
-    stateChange: false
+    stateChange: false,
+    
 }
 
 export const authSlice = createSlice({

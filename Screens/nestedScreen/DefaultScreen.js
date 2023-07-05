@@ -5,12 +5,15 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Text,
+  StyleSheet
 } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { db } from "../../firebase/config";
 
-import {  collection, query, onSnapshot} from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
+
 
 export const DefaultScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -50,6 +53,9 @@ export const DefaultScreen = ({ route, navigation }) => {
                 borderRadius: 8,
               }}
             />
+            <View>
+              <Text style={styles.title }>{item.photoTitle }</Text>
+            </View>
             <View
               style={{
                 flexDirection: "row",
@@ -58,7 +64,7 @@ export const DefaultScreen = ({ route, navigation }) => {
               }}
             >
               <TouchableOpacity
-                onPress={() => navigation.navigate("Коментарі")}
+                onPress={() => navigation.navigate("Коментарі", { id: item.id})}
               >
                 <EvilIcons name="comment" size={24} color="#BDBDBD" />
               </TouchableOpacity>
@@ -72,3 +78,13 @@ export const DefaultScreen = ({ route, navigation }) => {
     </View>
   );
 };
+
+
+const styles = StyleSheet.create({
+  title: {
+fontSize: 16,
+  fontWeight: 500,
+    color: "#212121",
+    fontFamily: "roboto",
+  }
+})
