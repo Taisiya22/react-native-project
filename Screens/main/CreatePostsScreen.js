@@ -31,6 +31,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [photoTitle, setPhotoTitle] = useState("");
   const [photoLocation, setPhotoLocation] = useState("");
+  
 
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
@@ -240,7 +241,7 @@ export const CreatePostsScreen = ({ navigation }) => {
                 size={24}
                 color="#BDBDBD"
                 style={styles.iconLocation}
-              />
+                />
             </View>
           </View>
 
